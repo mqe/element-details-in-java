@@ -11,7 +11,7 @@ import java.io.*;
 public class Elements
 {
   // instance variables
-  private Map<String, List<String>> elementMap;
+  private Map<Integer, List<String>> elementMap;
    
   /**
     * Constructor for objects
@@ -19,7 +19,7 @@ public class Elements
   public Elements()
   {  
     // initialise instance variables
-    this.elementMap = new HashMap<String, List<String>>();
+    this.elementMap = new HashMap<Integer, List<String>>();
   }
    
   /**
@@ -42,11 +42,14 @@ public class Elements
         // split lines
         String[] elementData = line.split(",");
 
+        // initialise element key as integer
+        int mapKey = Integer.parseInt(elementData[0]);
+
         // populate map with element data
-        this.elementMap.put(elementData[0], new ArrayList<String>());
-        this.elementMap.get(elementData[0]).add(elementData[1]);
-        this.elementMap.get(elementData[0]).add(elementData[2]);
-        this.elementMap.get(elementData[0]).add(elementData[3]);
+        this.elementMap.put(mapKey, new ArrayList<String>());
+        this.elementMap.get(mapKey).add(elementData[1]);
+        this.elementMap.get(mapKey).add(elementData[2]);
+        this.elementMap.get(mapKey).add(elementData[3]);
       }
     }
 
@@ -87,12 +90,12 @@ public class Elements
   {
     // local variables
     boolean foundElement = false;
-    SortedSet<String> allElements = new TreeSet<String>(elementMap.keySet());
+    SortedSet<Integer> allElements = new TreeSet<Integer>(elementMap.keySet());
 
     // print all data in map
     if (aKey.equals("all") || aKey.equals("All"))
     {
-      for (String element : allElements)
+      for (Integer element : allElements)
       { 
         // define element data as list
         List<String> elementData = elementMap.get(element);
@@ -104,7 +107,7 @@ public class Elements
     // find specific element in map
     else
     {
-      for (String element : allElements)
+      for (Integer element : allElements)
       {  
         // define element data as list
         List<String> elementData = elementMap.get(element);
@@ -155,9 +158,9 @@ public class Elements
     String elementsNotFound = notFound.toString();
 
     // print the table footer
-    System.out.println("");
     if (!elementsNotFound.equals("Elements not found: "))
     {
+      System.out.println("");
       System.out.println(elementsNotFound);
       System.out.println("");
     }
