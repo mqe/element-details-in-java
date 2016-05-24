@@ -108,7 +108,7 @@ public class Elements
         List<String> tempList = this.elementMap.get(aKey);
          
         // print element data
-        System.out.printf(aFormat, aKey, tempList.get(1), tempList.get(0), tempList.get(2));
+        System.out.printf(aFormat, aKey, tempList.get(0), tempList.get(1), tempList.get(2));
       }
       else
       {
