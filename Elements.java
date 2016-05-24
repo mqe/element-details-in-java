@@ -1,4 +1,5 @@
 import java.util.*;
+import java.io.*;
 
 /**
   * Element details in Java.
@@ -25,30 +26,71 @@ public class Elements
     * Method for populating map with data
     */
   private void populateMap()
-  {
-    // create key and new list for "Beryllium"
-    this.elementMap.put("Be", new ArrayList<String>());
-    this.elementMap.get("Be").add("4");
-    this.elementMap.get("Be").add("Beryllium");
-    this.elementMap.get("Be").add("9.012");
-      
-    // create key and new list for "Magnesium"
-    this.elementMap.put("Mg", new ArrayList<String>());
-    this.elementMap.get("Mg").add("12");
-    this.elementMap.get("Mg").add("Magnesium");
-    this.elementMap.get("Mg").add("24.305");
-      
-    // create key and new list for "Sodium"
-    this.elementMap.put("Na", new ArrayList<String>());
-    this.elementMap.get("Na").add("11");
-    this.elementMap.get("Na").add("Sodium");
-    this.elementMap.get("Na").add("22.980");
-      
-    // create key and new list for "Indium"
-    this.elementMap.put("In", new ArrayList<String>());
-    this.elementMap.get("In").add("49");
-    this.elementMap.get("In").add("Indium");
-    this.elementMap.get("In").add("114.818");
+  { 
+    // hydrogen
+    // this.elementMap.put("H", new ArrayList<String>());
+    // this.elementMap.get("H").add("1");
+    // this.elementMap.get("H").add("Hydrogen");
+    // this.elementMap.get("H").add("1.008");
+
+    // // helium
+    // this.elementMap.put("He", new ArrayList<String>());
+    // this.elementMap.get("He").add("2");
+    // this.elementMap.get("He").add("Helium");
+    // this.elementMap.get("He").add("4.002602");
+
+    // // helium
+    // this.elementMap.put("Li", new ArrayList<String>());
+    // this.elementMap.get("Li").add("3");
+    // this.elementMap.get("Li").add("Lithium");
+    // this.elementMap.get("Li").add("6.94");
+
+    String csvFile = "data.csv";
+    BufferedReader br = null;
+    String line = "";
+
+    try
+    {
+      // read data from csv
+      br = new BufferedReader(new FileReader(csvFile));
+      while ((line = br.readLine()) != null)
+      {
+
+        // split lines
+        String[] elementData = line.split(",");
+
+        // populate map with element data
+        this.elementMap.put(elementData[0], new ArrayList<String>());
+        this.elementMap.get(elementData[0]).add(elementData[1]);
+        this.elementMap.get(elementData[0]).add(elementData[2]);
+        this.elementMap.get(elementData[0]).add(elementData[3]);
+      }
+    }
+
+    // exceptions
+    catch (FileNotFoundException e)
+    {
+      e.printStackTrace();
+    } 
+    catch (IOException e) 
+    {
+      e.printStackTrace();
+    } 
+
+    // close reader
+    finally {
+      if (br != null) 
+      {
+        try 
+        {
+          br.close();
+        } 
+        catch (IOException e) 
+        {
+          e.printStackTrace();
+        }
+      }
+    }
   }
    
   /**
