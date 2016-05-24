@@ -25,31 +25,45 @@ public class Elements
   /**
     * Method for populating map with data
     */
-  private void populateMap()
+  private void populateMap(String aFile)
   { 
     // reader
-    String csvFile = "data.csv";
-    BufferedReader br = null;
+    // String csvFile = "data.csv";
+    String csvFile = aFile;
+    BufferedReader aReader = null;
     String line = "";
 
     try
     {
       // read data from csv
-      br = new BufferedReader(new FileReader(csvFile));
-      while ((line = br.readLine()) != null)
+      aReader = new BufferedReader(new FileReader(csvFile));
+      while ((line = aReader.readLine()) != null)
       {
 
         // split lines
-        String[] elementData = line.split(",");
+        String[] elementData = line.split(";");
 
         // initialise element key as integer
         int mapKey = Integer.parseInt(elementData[0]);
 
+        // initialise other element properties
+        String elementName = elementData[1];
+        String elementSymbol = elementData[2];
+        String elementWeight = elementData[3];
+        String elementPhase = elementData[6];
+        String elementCategory = elementData[8];
+        String elementEnergy = elementData[12];
+        String elementDiscoveredBy = elementData[17];
+
         // populate map with element data
         this.elementMap.put(mapKey, new ArrayList<String>());
-        this.elementMap.get(mapKey).add(elementData[1]);
-        this.elementMap.get(mapKey).add(elementData[2]);
-        this.elementMap.get(mapKey).add(elementData[3]);
+        this.elementMap.get(mapKey).add(elementSymbol);
+        this.elementMap.get(mapKey).add(elementName);
+        this.elementMap.get(mapKey).add(elementWeight);
+        this.elementMap.get(mapKey).add(elementEnergy);
+        this.elementMap.get(mapKey).add(elementPhase);
+        this.elementMap.get(mapKey).add(elementCategory);
+        // this.elementMap.get(mapKey).add(elementDiscoveredBy);
       }
     }
 
@@ -65,11 +79,11 @@ public class Elements
 
     // close reader
     finally {
-      if (br != null) 
+      if (aReader != null) 
       {
         try 
         {
-          br.close();
+          aReader.close();
         } 
         catch (IOException e) 
         {
@@ -101,7 +115,7 @@ public class Elements
         List<String> elementData = elementMap.get(element);
 
         // print element data
-        System.out.printf(aFormat, elementData.get(1), elementData.get(0), element, elementData.get(2));
+        System.out.printf(aFormat, element, elementData.get(0), elementData.get(1), elementData.get(2), elementData.get(3), elementData.get(4), elementData.get(5));
       }
     }
     // find specific element in map
@@ -113,9 +127,9 @@ public class Elements
         List<String> elementData = elementMap.get(element);
 
         // define element data as list
-        if (elementData.get(1).equals(aKey))
+        if (elementData.get(0).equals(aKey))
         {
-          System.out.printf(aFormat, elementData.get(1), elementData.get(0), element, elementData.get(2));
+          System.out.printf(aFormat, element, elementData.get(0), elementData.get(1), elementData.get(2), elementData.get(3), elementData.get(4), elementData.get(5));
           foundElement = true;
         }
       }
@@ -141,12 +155,12 @@ public class Elements
     StringBuilder notFound = new StringBuilder("Elements not found: ");
 
     // format and separator for print
-    String format = "%-15s%-15s%-15s%-15s\n";
-    String separator = new String(new char[60]).replace('\0', '-');
+    String format = "%-8s%-8s%-16s%-16s%-16s%-16s%-24s\n";
+    String separator = new String(new char[104]).replace('\0', '-');
 
     // print the table header
     System.out.println("");
-    System.out.printf(format, "Symbol", "Name", "Number", "Weight");
+    System.out.printf(format, "Num.", "Sym.", "Name", "Weight", "eV", "Phase", "Category");
     System.out.println(separator);
 
     // print data from map
@@ -175,8 +189,13 @@ public class Elements
     // create new map object
     Elements aMap = new Elements();
 
-    // populate map with data
-    aMap.populateMap();
+    // create a scanner and get path to file
+    Scanner scanner = new Scanner(System.in);
+    System.out.print("Enter path to file (eg. data/data.csv): ");
+    String aFile = scanner.next();
+
+    // populate map with data from file
+    aMap.populateMap(aFile);
 
     // print table
     printElementTable(aMap, args);
