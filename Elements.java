@@ -43,10 +43,10 @@ public class Elements
         String[] elementData = line.split(",");
 
         // populate map with element data
-        this.elementMap.put(elementData[2], new ArrayList<String>());
-        this.elementMap.get(elementData[2]).add(elementData[1]);
-        this.elementMap.get(elementData[2]).add(elementData[0]);
-        this.elementMap.get(elementData[2]).add(elementData[3]);
+        this.elementMap.put(elementData[0], new ArrayList<String>());
+        this.elementMap.get(elementData[0]).add(elementData[1]);
+        this.elementMap.get(elementData[0]).add(elementData[2]);
+        this.elementMap.get(elementData[0]).add(elementData[3]);
       }
     }
 
@@ -85,34 +85,41 @@ public class Elements
     */
   private void printElementData(String aKey, String aFormat, StringBuilder aString)
   {
+    // local variables
+    boolean foundElement = false;
+    SortedSet<String> allElements = new TreeSet<String>(elementMap.keySet());
+
     // print all data in map
     if (aKey.equals("all") || aKey.equals("All"))
     {
-      // print data for all elements in map
-      for (Map.Entry<String, List<String>> element : elementMap.entrySet())
+      for (String element : allElements)
       { 
-        // define map variables
-        String key = element.getKey();
-        List<String> tempList = element.getValue();
+        // define element data as list
+        List<String> elementData = elementMap.get(element);
 
         // print element data
-        System.out.printf(aFormat, key, tempList.get(0), tempList.get(1), tempList.get(2));
+        System.out.printf(aFormat, elementData.get(1), elementData.get(0), element, elementData.get(2));
       }
     }
+    // find specific element in map
     else
     {
-      // print specific element data
-      if (this.elementMap.get(aKey) != null)
-      {
-        // create temporary list for element data
-        List<String> tempList = this.elementMap.get(aKey);
-         
-        // print element data
-        System.out.printf(aFormat, aKey, tempList.get(0), tempList.get(1), tempList.get(2));
+      for (String element : allElements)
+      {  
+        // define element data as list
+        List<String> elementData = elementMap.get(element);
+
+        // define element data as list
+        if (elementData.get(1).equals(aKey))
+        {
+          System.out.printf(aFormat, elementData.get(1), elementData.get(0), element, elementData.get(2));
+          foundElement = true;
+        }
       }
-      else
+
+      // add input to 'not found' string
+      if (foundElement != true)
       {
-        // add input key to 'not found' string
         aString.append(aKey);
         aString.append(" ");
       }
